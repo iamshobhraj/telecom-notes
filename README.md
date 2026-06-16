@@ -1,4 +1,4 @@
-# 📡 Telecom Notes — Ericsson NDO Prep
+# 📡 Telecom Notes
 
 > **Atomic notes on cellular technology from 2G to 6G.**  
 > Every file stands alone but links to related notes.  

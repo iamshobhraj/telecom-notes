@@ -2,25 +2,26 @@
 
 > **Links:** [← KPIs & Optimization](./09-KPIs-optimization.md) | [README](./README.md)
 
-> Use this for final revision. All important tables in one place.
+> Use this for final revision before your interview. All important tables, comparisons, and one-liners in one place.
 
 ---
 
 ## Generation Overview
 
-| Gen | Year | Speed | Latency | Multiple Access | Key Technology |
+| Gen | Year | Speed | Latency | Multiple Access | Key Technology / Notes |
 |---|---|---|---|---|---|
-| 1G | 1979 | Analogue voice | — | FDMA | Analogue |
-| **2G GSM** | 1991 | 9.6 kbps | ~500 ms | TDMA + FDMA | Digital voice, SMS |
-| **2G GPRS** | 2000 | 172 kbps | ~300 ms | TDMA + FDMA | Packet data (2.5G) |
-| **2G EDGE** | 2003 | 384 kbps | <100 ms | TDMA + FDMA | 8PSK modulation (2.75G) |
-| **3G UMTS** | 2003 | 2 Mbps | 150 ms | CDMA (WCDMA) | Wideband CDMA, 5 MHz |
-| **3G HSPA** | 2005 | 14.4 Mbps DL | 100 ms | CDMA | HSDPA, shared channel, AMC |
-| **3G HSPA+** | 2008 | 28–84 Mbps | 50 ms | CDMA | MIMO, 64-QAM, DC |
-| **4G LTE** | 2009 | 100 Mbps | 10 ms | OFDMA / SC-FDMA | All-IP, flat architecture |
-| **4G LTE-A** | 2014 | 1 Gbps | <5 ms | OFDMA / SC-FDMA | Carrier aggregation, CoMP |
-| **5G NR** | 2018 | 20 Gbps | 4 ms | OFDMA (flexible) | Massive MIMO, slicing, mmWave |
-| 6G | ~2030 | TBD | <1 μs | TBD | THz, full duplex |
+| 1G | 1979 | Analogue | — | FDMA | Analogue voice |
+| **2G GSM** | 1991 | 9.6 kbps | ~500 ms | TDMA + FDMA | Digital voice, SMS, circuit-switched |
+| **2.5G GPRS** | 2000 | 172 kbps | ~300 ms | TDMA + FDMA | Introduced packet data (always-on) |
+| **2.75G EDGE** | 2003 | 384 kbps | <100 ms | TDMA + FDMA | 8PSK modulation introduced |
+| **2G CDMA** | 1995 | 115 kbps | — | CDMA | IS-95 / cdmaOne (Qualcomm alternative to GSM) |
+| **3G UMTS** | 2003 | 2 Mbps | 150 ms | CDMA (WCDMA) | 5 MHz wideband CDMA, soft handover |
+| **3.5G HSPA** | 2005 | 14.4 Mbps DL | 100 ms | CDMA | HSDPA, shared channel, AMC, HARQ |
+| **3G HSPA+** | 2008 | 28–84 Mbps | 50 ms | CDMA | MIMO, 64-QAM, Dual-Carrier |
+| **4G LTE** | 2009 | 100 Mbps | 10 ms | OFDMA / SC-FDMA | All-IP, flat architecture (no RNC) |
+| **4G LTE-A** | 2014 | 1 Gbps | <5 ms | OFDMA / SC-FDMA | Carrier aggregation, CoMP, true 4G |
+| **5G NR** | 2018 | 20 Gbps | <4 ms | OFDMA (flexible) | Massive MIMO, slicing, mmWave, SBA |
+| **6G** | ~2030 | TBD | <1 μs | TBD | THz, full duplex, RIS, AI-native |
 
 ---
 
@@ -29,9 +30,9 @@
 | Function | 2G GSM | 3G UMTS | 4G LTE | 5G NR |
 |---|---|---|---|---|
 | **Base Station** | BTS | NodeB | eNodeB (eNB) | gNodeB (gNB) |
-| **Controller** | BSC | RNC | ❌ (merged into eNB) | ❌ |
+| **Controller** | BSC | RNC | ❌ (merged to eNB) | ❌ |
 | **RAN Group** | BSS | UTRAN | E-UTRAN | NG-RAN |
-| **Mobility/Session** | MSC | MSC + SGSN | MME | AMF + SMF |
+| **Mobility/Auth** | MSC | MSC + SGSN | MME | AMF |
 | **User Plane GW** | ❌ | GGSN | S-GW + P-GW | UPF |
 | **Subscriber DB** | HLR | HLR | HSS | UDM |
 | **Auth Centre** | AuC | AuC | HSS (integrated) | AUSF |
@@ -39,61 +40,67 @@
 
 ---
 
-## Interface Names
+## Key Interfaces
 
-| Interface | Between | Generation |
+| Interface | Between Nodes | Generation |
 |---|---|---|
-| Abis | BTS ↔ BSC | 2G |
-| A | BSC ↔ MSC (voice) | 2G |
-| Gb | BSC ↔ SGSN (data) | 2G/GPRS |
-| Iub | NodeB ↔ RNC | 3G |
-| Iur | RNC ↔ RNC | 3G |
-| Iu-cs | RNC ↔ MSC | 3G voice |
-| Iu-ps | RNC ↔ SGSN | 3G data |
-| S1-MME | eNB ↔ MME | 4G control |
-| S1-U | eNB ↔ S-GW | 4G user data |
-| **X2** | eNB ↔ eNB | 4G HO coordination |
-| N1 | UE ↔ AMF | 5G NAS |
-| N2 | gNB ↔ AMF | 5G control |
-| N3 | gNB ↔ UPF | 5G user data |
+| **Abis** | BTS ↔ BSC | 2G |
+| **A** | BSC ↔ MSC (voice) | 2G |
+| **Gb** | BSC ↔ SGSN (data) | 2G/GPRS |
+| **Iub** | NodeB ↔ RNC | 3G |
+| **Iur** | RNC ↔ RNC | 3G (for soft handover) |
+| **Iu-cs / Iu-ps** | RNC ↔ MSC / SGSN | 3G (circuit / packet) |
+| **S1-MME** | eNB ↔ MME | 4G (control plane) |
+| **S1-U** | eNB ↔ S-GW | 4G (user plane) |
+| **X2** | eNB ↔ eNB | 4G (direct handover coordination) |
+| **N2 / N3** | gNB ↔ AMF / UPF | 5G (control / user) |
+| **Xn** | gNB ↔ gNB | 5G (direct coordination) |
 
 ---
 
 ## Handover Types Summary
 
-| Generation | Handover Type | Notes |
+| Generation | Handover Types | Notes |
 |---|---|---|
-| 2G GSM | Hard (always) | 4 types: intra-BTS, inter-BTS/BSC, inter-BSC, inter-MSC |
-| 3G UMTS | Hard + **Soft + Softer** | Soft = 2 NodeBs simultaneously; Softer = 2 sectors same NodeB |
-| 4G LTE | Hard (X2-based) | Fast X2 HO; data buffered at S-GW; no dropped packets |
-| 5G NR | Hard (Xn-based) | Similar to X2; beam-aware handover added |
+| **2G GSM** | Hard (always) | 4 types: intra-BTS, inter-BTS/BSC, inter-BSC, inter-MSC. Break before make. |
+| **3G UMTS** | Hard + **Soft + Softer** | Soft = UE connected to 2 NodeBs simultaneously. Softer = 2 sectors same NodeB. Make before break. |
+| **4G LTE** | Hard (X2-based) | Very fast X2 HO. Data is buffered at S-GW and forwarded via X2 to prevent dropped packets. |
+| **5G NR** | Hard (Xn-based) | Beam-aware handover. UE switches between fine beams rather than just entire cells. |
 
 ---
 
 ## KPI Quick Reference
 
-| KPI | Good | Warning | Critical | Measures |
+| KPI | Excellent | Acceptable | Critical | What it Measures |
 |---|---|---|---|---|
-| **RSRP** | > -80 dBm | -80 to -100 | < -110 dBm | Coverage / Signal strength |
-| **RSRQ** | > -10 dB | -10 to -15 | < -15 dB | Quality (interference-aware) |
-| **SINR** | > 20 dB | 0–10 dB | < 0 dB | Link quality → MCS selection |
-| **CSSR** | > 99% | < 98% | < 95% | Session setup success |
-| **CDR** | < 0.5% | > 1% | > 2% | Call drop rate |
-| **HOSR** | > 98% | < 95% | — | Handover success |
-| **PRB Util** | < 70% | 70–85% | > 85% | Capacity/congestion |
+| **RSRP** | > -80 dBm | -80 to -100 dBm | < -110 dBm | Signal strength / Coverage |
+| **RSRQ** | > -10 dB | -10 to -15 dB | < -15 dB | Quality (factors in interference) |
+| **SINR** | > 20 dB | 0–10 dB | < 0 dB | Link quality (determines MCS) |
+| **CSSR** | > 99% | 98–99% | < 95% | Session setup success |
+| **CDR** | < 0.5% | 0.5–1% | > 2% | Call drop rate |
+| **PRB Util** | < 70% | 70–85% | > 85% | Cell capacity / Congestion |
 
 ---
 
-## Modulation and Spectral Efficiency
+## Modulation and Required SINR
 
-| Modulation | Bits/Symbol | Required SINR (approx) | Used Where |
+| Modulation | Bits/Symbol | Required SINR | Used Where | Concept |
+|---|---|---|---|---|
+| **BPSK** | 1 bit | ~0 dB | Control channels | Robust, very slow |
+| **QPSK** | 2 bits | ~4 dB | Cell edge, control | Basic data |
+| **16-QAM** | 4 bits | ~12 dB | Mid-cell | Fast data |
+| **64-QAM** | 6 bits | ~20 dB | Close to tower | Very fast data |
+| **256-QAM** | 8 bits | ~25 dB | Excellent link (LTE-A, 5G) | Ultra fast data |
+
+---
+
+## 5G Use Cases (The Triangle)
+
+| Use Case | Target Latency | Target Speed | Examples |
 |---|---|---|---|
-| BPSK | 1 | ~0 dB | Control channels |
-| QPSK | 2 | ~4 dB | Poor coverage, control |
-| 8PSK | 3 | ~8 dB | EDGE only |
-| 16-QAM | 4 | ~12 dB | Mid-range |
-| 64-QAM | 6 | ~20 dB | Good link |
-| 256-QAM | 8 | ~25 dB | Excellent link (LTE-A, 5G) |
+| **eMBB** (Enhanced Mobile Broadband) | ~4 ms | 20 Gbps peak | 4K/8K Video, AR/VR, Fixed Wireless |
+| **URLLC** (Ultra-Reliable Low-Latency) | **< 1 ms** | Moderate | Autonomous vehicles, remote surgery, factory robotics |
+| **mMTC** (Massive Machine-Type Comms) | Relaxed | Very low | IoT sensors, smart city, smart agriculture (1M devices/km²) |
 
 ---
 
@@ -101,23 +108,27 @@
 
 | Item | Value |
 |---|---|
-| Subcarrier spacing | 15 kHz |
-| 1 Resource Block | 12 subcarriers × 0.5 ms slot |
-| 1 Subframe | 1 ms (2 slots) = smallest scheduling unit |
-| 1 Frame | 10 ms = 10 subframes |
-| RBs in 20 MHz | 100 |
-| RBs in 10 MHz | 50 |
-| RBs in 5 MHz | 25 |
+| **Subcarrier spacing** | 15 kHz |
+| **1 Resource Element (RE)** | 1 subcarrier × 1 OFDM symbol |
+| **1 Resource Block (RB)** | 12 subcarriers × 0.5 ms slot (84 REs total) |
+| **1 Subframe** | 1 ms (2 slots) = smallest scheduling unit (TTI) |
+| **1 Frame** | 10 ms = 10 subframes |
+| **RBs in 20 MHz bandwidth** | 100 RBs |
 
 ---
 
-## 5G Use Cases at a Glance
+## 🎯 High-Yield One-Liners for Interview
 
-| Use Case | Target Latency | Target Speed | Examples |
-|---|---|---|---|
-| eMBB | ~4 ms | 20 Gbps peak | Video, AR/VR |
-| URLLC | **< 1 ms** | Moderate | Autonomous vehicles, surgery |
-| mMTC | Relaxed | Very low | IoT sensors, smart city |
+- **"Why SC-FDMA on LTE uplink?"** → OFDMA has a high PAPR (Peak-to-Average Power Ratio) which drains battery. SC-FDMA lowers PAPR, making the handset power amplifier more efficient and saving battery life.
+- **"Difference between RSRP and RSRQ?"** → RSRP is pure signal strength. RSRQ is signal quality, which factors in interference from neighboring cells. You can have good RSRP but terrible RSRQ.
+- **"Why is soft handover only in 3G?"** → CDMA allows a UE to be connected to two cells simultaneously on the *same frequency* using different spreading codes. TDMA (2G) and OFDMA (4G) cannot do this because slots/subcarriers would clash.
+- **"What does an MME do?"** → It is the "brain" of the 4G core. It handles authentication, NAS signaling, paging, and handover coordination. **No user data flows through the MME.**
+- **"What is SON?"** → Self-Organizing Network. It automates NDO tasks like self-configuration (adding neighbors via ANR), self-optimization (load balancing via MLB), and self-healing.
+- **"NSA vs SA in 5G?"** → NSA (Non-Standalone) uses 5G radios bolted onto a 4G EPC core for a quick rollout. SA (Standalone) uses a proper 5G Core (5GC), enabling advanced features like network slicing and URLLC.
+- **"Why does 5G use flexible subcarrier spacing (numerology)?"** → Different use cases need different timings. eMBB works fine with 15 kHz. URLLC needs 120 kHz because wider subcarriers mean shorter time slots, enabling sub-millisecond latency.
+- **"CDMA vs OFDMA?"** → CDMA separates users by giving them unique mathematical codes on the same wide frequency band. OFDMA separates users by assigning them non-overlapping, orthogonal narrow frequency subcarriers.
+- **"What is Carrier Aggregation?"** → Combining multiple fragmented frequency bands (Component Carriers) into one virtual wideband channel to achieve gigabit speeds in LTE-A.
+- **"What is CoMP?"** → Coordinated Multipoint. Multiple base stations coordinate their transmissions to serve a cell-edge user simultaneously, turning interference into useful signal.
 
 ---
 
@@ -125,72 +136,24 @@
 
 | Acronym | Full Form |
 |---|---|
-| RAN | Radio Access Network |
-| UE | User Equipment |
-| BTS | Base Transceiver Station |
-| BSC | Base Station Controller |
-| MSC | Mobile Switching Centre |
-| HLR | Home Location Register |
-| VLR | Visitor Location Register |
-| AuC | Authentication Centre |
-| EIR | Equipment Identity Register |
-| SGSN | Serving GPRS Support Node |
-| GGSN | Gateway GPRS Support Node |
-| RNC | Radio Network Controller |
-| WCDMA | Wideband Code Division Multiple Access |
-| HSDPA | High Speed Downlink Packet Access |
-| HSUPA | High Speed Uplink Packet Access |
-| eNB | Evolved NodeB (eNodeB) |
-| gNB | Next-Gen NodeB (gNodeB) |
-| EPC | Evolved Packet Core |
-| MME | Mobility Management Entity |
-| S-GW | Serving Gateway |
-| P-GW | PDN Gateway |
-| HSS | Home Subscriber Server |
-| PCRF | Policy and Charging Rules Function |
-| AMF | Access and Mobility Management Function |
-| SMF | Session Management Function |
-| UPF | User Plane Function |
-| OFDMA | Orthogonal Frequency Division Multiple Access |
-| SC-FDMA | Single Carrier FDMA |
-| MIMO | Multiple Input Multiple Output |
-| RSRP | Reference Signal Received Power |
-| RSRQ | Reference Signal Received Quality |
-| SINR | Signal to Interference and Noise Ratio |
-| CSSR | Call Setup Success Rate |
-| CDR | Call Drop Rate |
-| HOSR | Handover Success Rate |
-| PRB | Physical Resource Block |
-| SON | Self-Organizing Network |
-| ANR | Automatic Neighbour Relation |
-| MLB | Mobility Load Balancing |
-| MRO | Mobility Robustness Optimization |
-| CCO | Coverage and Capacity Optimization |
-| HARQ | Hybrid Automatic Repeat reQuest |
-| AMC | Adaptive Modulation and Coding |
-| VoLTE | Voice over LTE |
-| VoNR | Voice over New Radio |
-| IMS | IP Multimedia Subsystem |
-| SRVCC | Single Radio Voice Call Continuity |
-| NSA | Non-Standalone (5G) |
-| SA | Standalone (5G) |
-| NATS | National Apprenticeship Training Scheme |
-| GSD | Global Service Delivery |
-| NDO | Network Design and Optimisation |
-| SLA | Service Level Agreement |
-
----
-
-## One-Liners for Interview
-
-- **"Why SC-FDMA on LTE uplink?"** → Lower PAPR than OFDMA → handset power amplifier more efficient → better battery life
-- **"Difference between RSRP and RSRQ?"** → RSRP = signal strength; RSRQ = quality (factors in interference)
-- **"Why soft handover only in 3G?"** → CDMA allows simultaneous links on same frequency; TDMA/OFDMA don't
-- **"What does an MME do?"** → Control plane for LTE EPC: authentication, NAS signaling, paging, handover coordination — no user data flows through it
-- **"What is SON?"** → Self-Organizing Network: self-configuration, self-optimization, self-healing of network parameters without manual intervention
-- **"NSA vs SA in 5G?"** → NSA uses LTE core (EPC); SA uses 5GC — SA supports full 5G features like network slicing and URLLC
-- **"Why does 5G use flexible subcarrier spacing?"** → Different use cases need different slot durations: eMBB works fine with 15/30 kHz; URLLC needs 120 kHz (very short slot = low latency); mMTC needs efficiency at lower SCS
-- **"What is a link budget?"** → Calculation of maximum path loss that still allows reliable communication → determines maximum cell range
+| **UE / MS** | User Equipment / Mobile Station |
+| **BTS / eNB / gNB** | Base Transceiver Station / eNodeB / gNodeB |
+| **RAN / EPC / 5GC**| Radio Access Network / Evolved Packet Core / 5G Core |
+| **MME / AMF** | Mobility Management Entity / Access & Mobility Mgmt Function |
+| **S-GW / P-GW** | Serving Gateway / PDN Gateway |
+| **UPF / SMF** | User Plane Function / Session Management Function |
+| **WCDMA / OFDMA** | Wideband CDMA / Orthogonal Frequency Division Multiple Access |
+| **HSDPA / HSUPA** | High Speed Downlink/Uplink Packet Access |
+| **MIMO** | Multiple Input Multiple Output |
+| **RSRP / RSRQ** | Reference Signal Received Power / Quality |
+| **SINR** | Signal to Interference and Noise Ratio |
+| **CSSR / CDR** | Call Setup Success Rate / Call Drop Rate |
+| **PRB** | Physical Resource Block |
+| **SON / ANR** | Self-Organizing Network / Automatic Neighbour Relation |
+| **HARQ / AMC** | Hybrid Automatic Repeat reQuest / Adaptive Modulation & Coding |
+| **VoLTE / VoNR** | Voice over LTE / Voice over New Radio |
+| **NSA / SA** | Non-Standalone / Standalone (5G deployments) |
+| **NDO** | Network Design and Optimisation |
 
 ---
 
